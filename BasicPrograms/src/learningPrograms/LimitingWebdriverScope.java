@@ -1,6 +1,8 @@
 package learningPrograms;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -30,11 +32,20 @@ public class LimitingWebdriverScope {
 		int footerFirstColumnCount = footerLink.findElements(By.xpath("//div[@id='gf-BIG']/table/tbody/tr/td/ul")).size();
 		System.out.println("total links on footer: " + footerFirstColumnCount);
 		
+		//Click all links and open them in new window
 		for (int i = 1 ; i <= footerFirstColumnCount; i++) {
 			String clickOnLinks = Keys.chord(Keys.CONTROL, Keys.ENTER);
-			columnLink.findElements(By.tagName("a")).get(i).sendKeys(clickOnLinks);;
+			columnLink.findElements(By.tagName("a")).get(i).sendKeys(clickOnLinks);
 		}
 		
+		//Get title of all windows which were opened
+		Set<String> wHandles = driver.getWindowHandles();
+		Iterator<String> it = wHandles.iterator();
+		
+		while (it.hasNext()) {
+			driver.switchTo().window(it.next());
+			System.out.println(driver.getTitle());
+		}
 	}
 
 }
